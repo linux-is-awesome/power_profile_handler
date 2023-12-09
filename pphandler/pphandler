@@ -34,10 +34,15 @@ BAT_POWERSAVER_PPT=10000
 BAT_POWERSAVER_TCTL=59
 BAT_POWERSAVER_EDC=55000
 
+IS_AC_POWER=`/usr/bin/systemd-ac-power -v`
+POWER_PROFILE=`/usr/bin/powerprofilesctl get`
 
-POWER_PROFILE=`powerprofilesctl get`
+# set Balanced as a fallback
+if [ -z $POWER_PROFILE ]; then
+    POWER_PROFILE='balanced'
+fi
 
-if on_ac_power; then
+if [ $IS_AC_POWER = "yes" ]; then
     echo "Running: AC - $POWER_PROFILE"
     case $POWER_PROFILE in
         performance)
@@ -70,4 +75,3 @@ else
         ;;
     esac
 fi
-

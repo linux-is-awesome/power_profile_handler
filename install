@@ -15,7 +15,7 @@ cp ./pphandler.rules /etc/udev/rules.d/pphandler.rules
 cp ./pphandler.service /etc/systemd/system/pphandler.service
 
 echo "Create symlinks..."
-ln -s /usr/bin/pphandler /lib/systemd/system-sleep/pphandler
+ln -sf /usr/bin/pphandler /lib/systemd/system-sleep/pphandler
 
 echo "Update udev rules..."
 /usr/bin/udevadm trigger
@@ -26,7 +26,7 @@ systemctl start pphandler.service
 
 read -p "Press ENTER if you want to apply changes now or type anything to skip: " V
 
-if [ ! -n "$V" ]; then
+if [ -z $V ]; then
     /usr/bin/pphandler
 fi
 

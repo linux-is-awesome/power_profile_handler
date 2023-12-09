@@ -1,9 +1,0 @@
-#!/bin/bash
-
-POWER_PROFILE=`powerprofilesctl get`
-
-if [[ "$POWER_PROFILE" == "performance" ]]; then
-    ryzenadj -f 80
-else
-    ryzenadj -f 60
-fi

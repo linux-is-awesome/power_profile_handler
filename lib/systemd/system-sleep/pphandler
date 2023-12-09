@@ -1,8 +1,0 @@
-#!/bin/sh
-
-case $1 in
-    post)
-        /usr/bin/pphandler
-    	/usr/bin/udevadm trigger
-    ;;
-esac

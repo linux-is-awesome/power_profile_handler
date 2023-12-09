@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Root access is required
+if [ `id -u` -ne 0 ]; then
+    echo "Please run as root"
+    exit 0
+fi
+
+echo "Disable service..."
+systemctl stop pphandler.service
+systemctl disable pphandler.service
+
+echo "Remove symlinks..."
+rm /lib/systemd/system-sleep/pphandler
+
+echo "Delete files..."
+rm /usr/bin/pphandler
+rm /usr/bin/pphandler.py
+rm /usr/bin/ryzenadj
+rm /etc/udev/rules.d/pphandler.rules
+rm /etc/systemd/system/pphandler.service
+
+echo "Update udev rules..."
+/usr/bin/udevadm trigger
+
+read -p "Done! You need to reboot to restore default CPU settings. Press any key to exit... " V
+

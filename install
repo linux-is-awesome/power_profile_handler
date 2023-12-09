@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# Root access is required
+if [ `id -u` -ne 0 ]; then
+    echo "Please run as root"
+    exit 0
+fi
+
+echo "Copy files..."
+cd ./pphandler
+cp ./pphandler /usr/bin/pphandler
+cp ./pphandler.py /usr/bin/pphandler.py
+cp ./ryzenadj /usr/bin/ryzenadj
+cp ./pphandler.rules /etc/udev/rules.d/pphandler.rules
+cp ./pphandler.service /etc/systemd/system/pphandler.service
+
+echo "Create symlinks..."
+ln -s /usr/bin/pphandler /lib/systemd/system-sleep/pphandler
+
+echo "Update udev rules..."
+/usr/bin/udevadm trigger
+
+echo "Enable service..."
+systemctl enable pphandler.service
+systemctl start pphandler.service
+
+read -p "Press ENTER if you want to apply changes now or type anything to skip: " V
+
+if [ ! -n "$V" ]; then
+    /usr/bin/pphandler
+fi
+
+read -p "Done! Press any key to exit... " V

@@ -1,0 +1,73 @@
+#!/bin/sh
+
+# Make this script to handle sleep states if placed in /lib/systemd/system-sleep
+if [ -n "$1" -a "$1" != "post" ]; then
+    echo "Sleep state '$1' is not supported, ignoring..."
+    exit 0
+fi
+
+# PPT - TDP limit (mW)
+# TCTL - Temp limit (C)
+# EDC - A limit (mA)
+
+AC_PERFORMANCE_PPT=30000
+AC_PERFORMANCE_TCTL=80
+AC_PERFORMANCE_EDC=105000
+
+AC_BALANCED_PPT=30000
+AC_BALANCED_TCTL=60
+AC_BALANCED_EDC=105000
+
+AC_POWERSAVER_PPT=30000
+AC_POWERSAVER_TCTL=59
+AC_POWERSAVER_EDC=105000
+
+BAT_PERFORMANCE_PPT=15000
+BAT_PERFORMANCE_TCTL=70
+BAT_PERFORMANCE_EDC=55000
+
+BAT_BALANCED_PPT=15000
+BAT_BALANCED_TCTL=60
+BAT_BALANCED_EDC=55000
+
+BAT_POWERSAVER_PPT=10000
+BAT_POWERSAVER_TCTL=59
+BAT_POWERSAVER_EDC=55000
+
+
+POWER_PROFILE=`powerprofilesctl get`
+
+if on_ac_power; then
+    echo "Running: AC - $POWER_PROFILE"
+    case $POWER_PROFILE in
+        performance)
+            echo "Applying: PPT $AC_PERFORMANCE_PPT EDC $AC_PERFORMANCE_EDC TCTL $AC_PERFORMANCE_TCTL"
+            /usr/bin/ryzenadj -a $AC_PERFORMANCE_PPT -b $AC_PERFORMANCE_PPT -c $AC_PERFORMANCE_PPT -k $AC_PERFORMANCE_EDC -f $AC_PERFORMANCE_TCTL
+        ;;
+        balanced)
+            echo "Applying: PPT $AC_BALANCED_PPT EDC $AC_BALANCED_EDC TCTL $AC_BALANCED_TCTL"
+            /usr/bin/ryzenadj -a $AC_BALANCED_PPT -b $AC_BALANCED_PPT -c $AC_BALANCED_PPT -k $AC_BALANCED_EDC -f $AC_BALANCED_TCTL
+        ;;
+        power-saver)
+            echo "Applying: PPT $AC_POWERSAVER_PPT EDC $AC_POWERSAVER_EDC TCTL $AC_POWERSAVER_TCTL"
+            /usr/bin/ryzenadj -a $AC_POWERSAVER_PPT -b $AC_POWERSAVER_PPT -c $AC_POWERSAVER_PPT -k $AC_POWERSAVER_EDC -f $AC_POWERSAVER_TCTL
+        ;;
+    esac
+else
+    echo "Running: Battery - $POWER_PROFILE"
+    case $POWER_PROFILE in
+        performance)
+            echo "Applying: PPT $BAT_PERFORMANCE_PPT EDC $BAT_PERFORMANCE_EDC TCTL $BAT_PERFORMANCE_TCTL"
+            /usr/bin/ryzenadj -a $BAT_PERFORMANCE_PPT -b $BAT_PERFORMANCE_PPT -c $BAT_PERFORMANCE_PPT -k $BAT_PERFORMANCE_EDC -f $BAT_PERFORMANCE_TCTL
+        ;;
+        balanced)
+            echo "Applying: PPT $BAT_BALANCED_PPT EDC $BAT_BALANCED_EDC TCTL $BAT_BALANCED_TCTL"
+            /usr/bin/ryzenadj -a $BAT_BALANCED_PPT -b $BAT_BALANCED_PPT -c $BAT_BALANCED_PPT -k $BAT_BALANCED_EDC -f $BAT_BALANCED_TCTL
+        ;;
+        power-saver)
+            echo "Applying: PPT $BAT_POWERSAVER_PPT EDC $BAT_POWERSAVER_EDC TCTL $BAT_POWERSAVER_TCTL"
+            /usr/bin/ryzenadj -a $BAT_POWERSAVER_PPT -b $BAT_POWERSAVER_PPT -c $BAT_POWERSAVER_PPT -k $BAT_POWERSAVER_EDC -f $BAT_POWERSAVER_TCTL
+        ;;
+    esac
+fi
+

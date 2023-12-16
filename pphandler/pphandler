@@ -47,15 +47,15 @@ if [ $IS_AC_POWER = "yes" ]; then
     case $POWER_PROFILE in
         performance)
             echo "Applying: PPT $AC_PERFORMANCE_PPT EDC $AC_PERFORMANCE_EDC TCTL $AC_PERFORMANCE_TCTL"
-            /usr/bin/ryzenadj -a $AC_PERFORMANCE_PPT -b $AC_PERFORMANCE_PPT -c $AC_PERFORMANCE_PPT -k $AC_PERFORMANCE_EDC -f $AC_PERFORMANCE_TCTL
+            /usr/bin/ryzenadj --max-performance -a $AC_PERFORMANCE_PPT -b $AC_PERFORMANCE_PPT -c $AC_PERFORMANCE_PPT -k $AC_PERFORMANCE_EDC -f $AC_PERFORMANCE_TCTL
         ;;
         balanced)
             echo "Applying: PPT $AC_BALANCED_PPT EDC $AC_BALANCED_EDC TCTL $AC_BALANCED_TCTL"
-            /usr/bin/ryzenadj -a $AC_BALANCED_PPT -b $AC_BALANCED_PPT -c $AC_BALANCED_PPT -k $AC_BALANCED_EDC -f $AC_BALANCED_TCTL
+            /usr/bin/ryzenadj --max-performance -a $AC_BALANCED_PPT -b $AC_BALANCED_PPT -c $AC_BALANCED_PPT -k $AC_BALANCED_EDC -f $AC_BALANCED_TCTL
         ;;
         power-saver)
             echo "Applying: PPT $AC_POWERSAVER_PPT EDC $AC_POWERSAVER_EDC TCTL $AC_POWERSAVER_TCTL"
-            /usr/bin/ryzenadj -a $AC_POWERSAVER_PPT -b $AC_POWERSAVER_PPT -c $AC_POWERSAVER_PPT -k $AC_POWERSAVER_EDC -f $AC_POWERSAVER_TCTL
+            /usr/bin/ryzenadj --max-performance -a $AC_POWERSAVER_PPT -b $AC_POWERSAVER_PPT -c $AC_POWERSAVER_PPT -k $AC_POWERSAVER_EDC -f $AC_POWERSAVER_TCTL
         ;;
     esac
 else
@@ -63,15 +63,15 @@ else
     case $POWER_PROFILE in
         performance)
             echo "Applying: PPT $BAT_PERFORMANCE_PPT EDC $BAT_PERFORMANCE_EDC TCTL $BAT_PERFORMANCE_TCTL"
-            /usr/bin/ryzenadj -a $BAT_PERFORMANCE_PPT -b $BAT_PERFORMANCE_PPT -c $BAT_PERFORMANCE_PPT -k $BAT_PERFORMANCE_EDC -f $BAT_PERFORMANCE_TCTL
+            /usr/bin/ryzenadj --max-performance -a $BAT_PERFORMANCE_PPT -b $BAT_PERFORMANCE_PPT -c $BAT_PERFORMANCE_PPT -k $BAT_PERFORMANCE_EDC -f $BAT_PERFORMANCE_TCTL
         ;;
         balanced)
             echo "Applying: PPT $BAT_BALANCED_PPT EDC $BAT_BALANCED_EDC TCTL $BAT_BALANCED_TCTL"
-            /usr/bin/ryzenadj -a $BAT_BALANCED_PPT -b $BAT_BALANCED_PPT -c $BAT_BALANCED_PPT -k $BAT_BALANCED_EDC -f $BAT_BALANCED_TCTL
+            /usr/bin/ryzenadj --power-saving -a $BAT_BALANCED_PPT -b $BAT_BALANCED_PPT -c $BAT_BALANCED_PPT -k $BAT_BALANCED_EDC -f $BAT_BALANCED_TCTL
         ;;
         power-saver)
             echo "Applying: PPT $BAT_POWERSAVER_PPT EDC $BAT_POWERSAVER_EDC TCTL $BAT_POWERSAVER_TCTL"
-            /usr/bin/ryzenadj -a $BAT_POWERSAVER_PPT -b $BAT_POWERSAVER_PPT -c $BAT_POWERSAVER_PPT -k $BAT_POWERSAVER_EDC -f $BAT_POWERSAVER_TCTL
+            /usr/bin/ryzenadj --power-saving -a $BAT_POWERSAVER_PPT -b $BAT_POWERSAVER_PPT -c $BAT_POWERSAVER_PPT -k $BAT_POWERSAVER_EDC -f $BAT_POWERSAVER_TCTL
         ;;
     esac
 fi
